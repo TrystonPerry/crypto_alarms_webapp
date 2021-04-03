@@ -12,11 +12,17 @@ export default ({ ctx, chartType, values, label, minutes = 60 }) => {
         {
           label,
           data: Object.values(values),
+          backgroundColor: "rgb(0,0,0)",
         },
       ],
     },
     options: {
       scales: {
+        xAxes: [
+          {
+            display: false,
+          },
+        ],
         yAxes: [
           {
             ticks: {
