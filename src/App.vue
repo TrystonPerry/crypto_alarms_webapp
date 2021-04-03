@@ -1,28 +1,30 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+  <div id="app" class="bg-gray-300 w-screen h-screen">
+    <form @submit.prevent="newTicker" class="flex p-4 w-screen">
+      <input type="text" v-model="ticker" class="flex-grow" />
+      <button type="submit" class="py-2 px-5">Submit</button>
+    </form>
   </div>
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
-
 export default {
   name: "App",
-  components: {
-    HelloWorld,
+
+  components: {},
+
+  data: () => ({
+    ticker: "BTC",
+  }),
+
+  methods: {
+    newTicker() {},
   },
 };
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+body {
+  margin: 0;
 }
 </style>
