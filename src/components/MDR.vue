@@ -1,10 +1,12 @@
 <template>
-  <div class="md:flex">
-    <div class="md:w-6/12">
-      <canvas ref="mdrchange" class="w-full"></canvas>
-    </div>
-    <div class="md:w-6/12">
-      <canvas ref="mdr" class="w-full"></canvas>
+  <div>
+    <div class="md:flex">
+      <div class="md:w-6/12">
+        <canvas ref="mdrchange" class="w-full"></canvas>
+      </div>
+      <div class="md:w-6/12">
+        <canvas ref="mdr" class="w-full"></canvas>
+      </div>
     </div>
   </div>
 </template>
@@ -50,7 +52,7 @@ export default {
         const last = Math.abs(mdrData[i - 1].y);
         const current = Math.abs(mdrData[i].y);
         const time = new Date(data.labels[i]).getTime();
-        const min5 = Math.floor(time / 1000 / 60 / 5) - 60 * 6;
+        const min5 = Math.floor(time / 1000 / 60 / 5);
         values[min5] = last - current;
       }
 

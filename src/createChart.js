@@ -5,8 +5,13 @@ export default ({ ctx, chartType, values, label, minutes = 60 }) => {
     type: chartType,
     data: {
       labels: Object.keys(values).map((hour) => {
-        const date = new Date(hour * minutes * 60 * 1000);
-        return moment(date.getTime()).format("L, h:mm a");
+        const d = new Date(hour * minutes * 60 * 1000);
+        const text = `${
+          d.getMonth() + 1
+        }/${d.getDate()}/${d.getFullYear()} ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()} GMT-0000`;
+        console.log(text);
+        const date = new Date(text);
+        return moment(date.getTime()).format("L, HH:mm ");
       }),
       datasets: [
         {
