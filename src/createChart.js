@@ -1,6 +1,6 @@
 import moment from "moment";
 
-export default ({ ctx, chartType, values, label, minutes = 60 }) => {
+function createTimeChart({ ctx, chartType, values, label, minutes = 60 }) {
   return new window.Chart(ctx, {
     type: chartType,
     data: {
@@ -38,4 +38,38 @@ export default ({ ctx, chartType, values, label, minutes = 60 }) => {
       },
     },
   });
-};
+}
+
+function createNormalChart({ ctx, chartType, values, label }) {
+  return new window.Chart(ctx, {
+    type: chartType,
+    data: {
+      labels: Object.keys(values),
+      datasets: [
+        {
+          label,
+          data: Object.values(values),
+          backgroundColor: "rgb(0,0,0)",
+        },
+      ],
+    },
+    options: {
+      scales: {
+        xAxes: [
+          {
+            display: false,
+          },
+        ],
+        yAxes: [
+          {
+            ticks: {
+              beginAtZero: true,
+            },
+          },
+        ],
+      },
+    },
+  });
+}
+
+export default { createTimeChart, createNormalChart };
