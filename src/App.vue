@@ -1,6 +1,6 @@
 <template>
   <div id="app" class="w-screen h-screen">
-    <div class="bg-gray-200">
+    <!-- <div class="bg-gray-200">
       <div class="md:flex w-full p-4">
         <button
           v-for="t in favoriteTickers"
@@ -27,23 +27,17 @@
           </button>
         </div>
       </form>
-    </div>
+    </div> -->
 
-    <main class="m-2">
-      <MDR :ticker="selectedTicker" />
+    <main>
+      <router-view></router-view>
     </main>
   </div>
 </template>
 
 <script>
-import MDR from "@/components/MDR";
-
 export default {
   name: "App",
-
-  components: {
-    MDR,
-  },
 
   data: () => ({
     selectedTicker: "BTC",
