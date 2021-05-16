@@ -31,7 +31,8 @@ export default {
     window.addEventListener("resize", this.onResizeWindow);
 
     const res = await fetch(
-      "http://localhost:3000/ftx-data/" +
+      process.env.VUE_APP_API_URL +
+        "/ftx-data/" +
         this.$route.params.market.toLowerCase()
     );
     const json = await res.json();
