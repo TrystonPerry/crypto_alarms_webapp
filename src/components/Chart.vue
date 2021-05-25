@@ -49,10 +49,13 @@ export default {
 
     for (let i = 0; i < json.candles.length; i++) {
       const candle = json.candles[i];
-      const vr = json.volumeRatios[i];
+
       const { open, high, low, close, buy_volume, sell_volume } = candle;
 
       const timestamp = candle.timestamp * 60 * 1000;
+      const vr =
+        json.volumeRatios &&
+        json.volumeRatios.find((v) => v.timestamp === candle.timestamp);
 
       candles.push([timestamp, open, high, low, close]);
 
@@ -71,14 +74,16 @@ export default {
       ]);
       orderStrength.push([timestamp, candle.bid_strength, candle.ask_strength]);
       removedOrders.push([timestamp, candle.removed_bids, candle.removed_asks]);
-      volumeRatios.push([
-        timestamp,
-        vr["1k"],
-        vr["10k"],
-        vr["10k"],
-        vr["1m"],
-        vr["10m"],
-      ]);
+      if (vr) {
+        volumeRatios.push([
+          timestamp,
+          vr["1k"],
+          vr["10k"],
+          vr["10k"],
+          vr["1m"],
+          vr["10m"],
+        ]);
+      }
     }
 
     this.chart = new DataCube({
