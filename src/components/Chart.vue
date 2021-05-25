@@ -45,8 +45,11 @@ export default {
     const bestOrderStrength = [];
     const orderStrength = [];
     const removedOrders = [];
+    const volumeRatios = [];
 
-    for (const candle of json) {
+    for (let i = 0; i < json.candles.length; i++) {
+      const candle = json.candles[i];
+      const vr = json.volumeRatios[i];
       const { open, high, low, close, buy_volume, sell_volume } = candle;
 
       const timestamp = candle.timestamp * 60 * 1000;
@@ -68,6 +71,14 @@ export default {
       ]);
       orderStrength.push([timestamp, candle.bid_strength, candle.ask_strength]);
       removedOrders.push([timestamp, candle.removed_bids, candle.removed_asks]);
+      volumeRatios.push([
+        timestamp,
+        vr["1k"],
+        vr["10k"],
+        vr["10k"],
+        vr["1m"],
+        vr["10m"],
+      ]);
     }
 
     this.chart = new DataCube({
@@ -115,9 +126,20 @@ export default {
           },
         },
         {
-          name: "Candeled + Filled orders",
-          type: "Spline",
+          name: "Canceled Bids & Canceled Asks",
+          type: "Splines",
           data: removedOrders,
+          settings: {
+            colors: [colors.green, colors.red],
+          },
+        },
+        {
+          name: "Volume Ratios (<1k, <10k, <100k, <1M, <10M)",
+          type: "Splines",
+          data: volumeRatios,
+          // settings: {
+          //   colors: [colors.green, colors.red],
+          // },
         },
       ],
     });
