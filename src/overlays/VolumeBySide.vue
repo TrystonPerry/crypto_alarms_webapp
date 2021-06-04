@@ -30,8 +30,7 @@ export default {
     draw(ctx) {
       const layout = this.$props.layout;
       const data = this.$props.data;
-
-      console.log(data, this.$props.sub);
+      window.layout = layout;
 
       for (var k = 0, n = data.length; k < n; k++) {
         const pos0 = layout.$2screen(0);
@@ -40,11 +39,12 @@ export default {
         let x = layout.t2screen(p[0]);
         let y1 = layout.$2screen(p[1]);
         let y2 = layout.$2screen(-p[2]);
+        const w = layout.px_step * 0.5;
 
         ctx.fillStyle = "#23A776";
-        ctx.fillRect(x, y1, 1, pos0 - y1);
+        ctx.fillRect(x - w / 2, y1, w, pos0 - y1);
         ctx.fillStyle = "#E54150";
-        ctx.fillRect(x, pos0, 1, pos0 - y2);
+        ctx.fillRect(x - w / 2, pos0, w, pos0 - y2);
       }
     },
 
