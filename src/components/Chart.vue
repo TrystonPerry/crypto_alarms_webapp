@@ -106,11 +106,11 @@ export default {
         data: candles,
       },
       offchart: [
-        {
-          name: "Open Interest",
-          type: "Spline",
-          data: openInterest,
-        },
+        // {
+        //   name: "Open Interest",
+        //   type: "Spline",
+        //   data: openInterest,
+        // },
         {
           name: "Volume By Side",
           type: "VolumeBySide",

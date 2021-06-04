@@ -41,10 +41,24 @@ export default {
         let y2 = layout.$2screen(-p[2]);
         const w = layout.px_step * 0.5;
 
-        ctx.fillStyle = "#23A776";
+        ctx.fillStyle = "#004b05";
         ctx.fillRect(x - w / 2, y1, w, pos0 - y1);
-        ctx.fillStyle = "#E54150";
+        ctx.fillStyle = "#750202";
         ctx.fillRect(x - w / 2, pos0, w, pos0 - y2);
+
+        const delta = p[1] + p[2];
+        // If negative delta
+        if (delta < 0) {
+          ctx.fillStyle = "#E54150";
+          const perc = delta / p[2];
+          ctx.fillRect(x - w / 2, pos0, w, (pos0 - y2) * perc);
+        }
+        // If positive delta
+        else {
+          ctx.fillStyle = "#0dc719";
+          const perc = delta / p[1];
+          ctx.fillRect(x - w / 2, pos0, w, -((pos0 - y1) * perc));
+        }
       }
     },
 
