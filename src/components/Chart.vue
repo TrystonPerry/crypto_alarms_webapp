@@ -3,6 +3,7 @@
     v-if="chart !== null"
     titleTxt="BTCPERP"
     :data="chart"
+    :overlays="overlays"
     :height="height"
     :width="width"
   />
@@ -10,11 +11,14 @@
 
 <script>
 import { TradingVue, DataCube } from "trading-vue-js";
+import Overlays from "tvjs-overlays";
 
-const colors = {
-  red: "#e84329",
-  green: "#30e53f",
-};
+import VolumeBySide from "@/overlays/VolumeBySide";
+
+// const colors = {
+//   red: "#e84329",
+//   green: "#30e53f",
+// };
 
 export default {
   components: {
@@ -23,6 +27,7 @@ export default {
 
   data: () => ({
     chart: null,
+    overlays: [...Object.values(Overlays), VolumeBySide],
     height: window.innerHeight,
     width: window.innerWidth,
   }),
@@ -39,13 +44,14 @@ export default {
 
     const candles = [];
     const openInterest = [];
-    const buyVolume = [];
-    const sellVolume = [];
-    const fundingRate = [];
-    const bestOrderStrength = [];
-    const orderStrength = [];
-    const removedOrders = [];
-    const volumeRatios = [];
+    const volumeBySide = [];
+    // const buyVolume = [];
+    // const sellVolume = [];
+    // const fundingRate = [];
+    // const bestOrderStrength = [];
+    // const orderStrength = [];
+    // const removedOrders = [];
+    // const volumeRatios = [];
 
     for (let i = 0; i < json.candles.length; i++) {
       const candle = json.candles[i];
@@ -53,37 +59,46 @@ export default {
       const { open, high, low, close, buy_volume, sell_volume } = candle;
 
       const timestamp = candle.timestamp * 60 * 1000;
-      const vr =
-        json.volumeRatios &&
-        json.volumeRatios.find((v) => v.timestamp === candle.timestamp);
+      // const vr =
+      //   json.volumeRatios &&
+      //   json.volumeRatios.find((v) => v.timestamp === candle.timestamp);
 
-      candles.push([timestamp, open, high, low, close]);
+      candles.push([
+        timestamp,
+        open,
+        high,
+        low,
+        close,
+        buy_volume + sell_volume,
+      ]);
 
       openInterest.push([timestamp, candle.open_interest]);
-      buyVolume.push([timestamp, buy_volume, true]);
-      sellVolume.push([timestamp, sell_volume]);
-      fundingRate.push([
-        timestamp,
-        candle.funding_rate,
-        candle.predicted_funding_rate,
-      ]);
-      bestOrderStrength.push([
-        timestamp,
-        candle.best_bid_strength,
-        candle.best_ask_strength,
-      ]);
-      orderStrength.push([timestamp, candle.bid_strength, candle.ask_strength]);
-      removedOrders.push([timestamp, candle.removed_bids, candle.removed_asks]);
-      if (vr) {
-        volumeRatios.push([
-          timestamp,
-          vr["1k"],
-          vr["10k"],
-          vr["10k"],
-          vr["1m"],
-          vr["10m"],
-        ]);
-      }
+      volumeBySide.push([timestamp, buy_volume, -sell_volume]);
+      console.log(this.overlays);
+      // buyVolume.push([timestamp, buy_volume, true]);
+      // sellVolume.push([timestamp, sell_volume]);
+      // fundingRate.push([
+      //   timestamp,
+      //   candle.funding_rate,
+      //   candle.predicted_funding_rate,
+      // ]);
+      // bestOrderStrength.push([
+      //   timestamp,
+      //   candle.best_bid_strength,
+      //   candle.best_ask_strength,
+      // ]);
+      // orderStrength.push([timestamp, candle.bid_strength, candle.ask_strength]);
+      // removedOrders.push([timestamp, candle.removed_bids, candle.removed_asks]);
+      // if (vr) {
+      //   volumeRatios.push([
+      //     timestamp,
+      //     vr["1k"],
+      //     vr["10k"],
+      //     vr["10k"],
+      //     vr["1m"],
+      //     vr["10m"],
+      //   ]);
+      // }
     }
 
     this.chart = new DataCube({
@@ -97,55 +112,60 @@ export default {
           data: openInterest,
         },
         {
-          name: "Buy Volume",
-          type: "Volume",
-          data: buyVolume,
+          name: "Volume By Side",
+          type: "VolumeBySide",
+          data: volumeBySide,
         },
-        {
-          name: "Sell Volume",
-          type: "Volume",
-          data: sellVolume,
-        },
-        {
-          name: "Funding Rate & Predicted Funding Rate",
-          type: "Splines",
-          data: fundingRate,
-          settings: {
-            colors: [colors.green, colors.red],
-          },
-        },
-        {
-          name: "Best Bid Strength & Best Ask Strength",
-          type: "Splines",
-          data: bestOrderStrength,
-          settings: {
-            colors: [colors.green, colors.red],
-          },
-        },
-        {
-          name: "Bid Strength & Ask Strength",
-          type: "Splines",
-          data: orderStrength,
-          settings: {
-            colors: [colors.green, colors.red],
-          },
-        },
-        {
-          name: "Canceled Bids & Canceled Asks",
-          type: "Splines",
-          data: removedOrders,
-          settings: {
-            colors: [colors.green, colors.red],
-          },
-        },
-        {
-          name: "Volume Ratios (<1k, <10k, <100k, <1M, <10M)",
-          type: "Splines",
-          data: volumeRatios,
-          // settings: {
-          //   colors: [colors.green, colors.red],
-          // },
-        },
+        // {
+        //   name: "Buy Volume",
+        //   type: "Volume",
+        //   data: buyVolume,
+        // },
+        // {
+        //   name: "Sell Volume",
+        //   type: "Volume",
+        //   data: sellVolume,
+        // },
+        // {
+        //   name: "Funding Rate & Predicted Funding Rate",
+        //   type: "Splines",
+        //   data: fundingRate,
+        //   settings: {
+        //     colors: [colors.green, colors.red],
+        //   },
+        // },
+        // {
+        //   name: "Best Bid Strength & Best Ask Strength",
+        //   type: "Splines",
+        //   data: bestOrderStrength,
+        //   settings: {
+        //     colors: [colors.green, colors.red],
+        //   },
+        // },
+        // {
+        //   name: "Bid Strength & Ask Strength",
+        //   type: "Splines",
+        //   data: orderStrength,
+        //   settings: {
+        //     colors: [colors.green, colors.red],
+        //   },
+        // },
+        // {
+        //   name: "Canceled Bids & Canceled Asks",
+        //   type: "Splines",
+        //   data: removedOrders,
+        //   settings: {
+        //     colors: [colors.green, colors.red],
+        //   },
+        // },
+        // {
+        //   name: "Volume Ratios (<1k, <10k, <100k, <1M, <10M)",
+        //   type: "Splines",
+        //   data: volumeRatios,
+        //   // settings: {
+        //   //   colors: [colors.green, colors.red],
+        //   // },
+        // },
       ],
     });
   },
