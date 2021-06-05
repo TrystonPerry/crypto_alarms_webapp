@@ -1,7 +1,7 @@
 <template>
   <TradingVue
     v-if="chart !== null"
-    titleTxt="BTCPERP"
+    :titleTxt="titleTxt"
     :data="chart"
     :overlays="overlays"
     :height="height"
@@ -26,6 +26,7 @@ export default {
   },
 
   data: () => ({
+    titleTxt: "",
     chart: null,
     overlays: [...Object.values(Overlays), VolumeBySide],
     height: window.innerHeight,
@@ -34,6 +35,8 @@ export default {
 
   async mounted() {
     window.addEventListener("resize", this.onResizeWindow);
+
+    this.titleTxt = this.$route.params.market.toUpperCase();
 
     const res = await fetch(
       process.env.VUE_APP_API_URL +
