@@ -39,7 +39,7 @@ export default {
         let x = layout.t2screen(p[0]);
         let y1 = layout.$2screen(p[1]);
         let y2 = layout.$2screen(-p[2]);
-        const w = layout.px_step * 0.5;
+        const w = layout.px_step * 0.95;
 
         ctx.fillStyle = "#004b05";
         ctx.fillRect(x - w / 2, y1, w, pos0 - y1);
