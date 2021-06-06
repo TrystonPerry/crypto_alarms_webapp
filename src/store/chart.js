@@ -1,6 +1,12 @@
 import { DataCube } from "trading-vue-js";
 import Vue from "vue";
 
+import Overlays from "@/overlays.json";
+
+function syncOverlaysLocaly(overlays) {
+  localStorage.setItem("overlays", JSON.stringify(Object.keys(overlays)));
+}
+
 export default () => ({
   state: {
     marketData: [],
@@ -26,11 +32,13 @@ export default () => ({
         data: state.marketData[index][overlay.propName],
       });
       Vue.set(state.overlays, overlay.id, true);
+      syncOverlaysLocaly(state.overlays);
     },
 
     REMOVE_OVERLAY(state, { index, name, id }) {
       state.charts[index].del(name);
       Vue.delete(state.overlays, id);
+      syncOverlaysLocaly(state.overlays);
     },
   },
 
@@ -110,6 +118,17 @@ export default () => ({
         candles,
         openInterest,
         volumeBySide,
+      });
+
+      setTimeout(() => {
+        for (const overlayId of JSON.parse(localStorage.getItem("overlays")) ||
+          []) {
+          console.log(Overlays, overlayId);
+          commit("ADD_OVERLAY", {
+            index: 0,
+            overlay: Overlays.find(({ id }) => overlayId === id),
+          });
+        }
       });
     },
   },
