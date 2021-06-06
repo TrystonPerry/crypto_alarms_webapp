@@ -1,16 +1,27 @@
 <template>
-  <TradingVue
-    v-if="chart !== null"
-    :titleTxt="titleTxt"
-    :data="chart"
-    :overlays="overlays"
-    :height="height"
-    :width="width"
-  />
+  <div>
+    <div class="flex items-center bg-gray-800 text-gray-200">
+      <button
+        @click="$store.dispatch('nav/showModal', { id: 'indicators' })"
+        class="flex items-center px-2 py-3 hover:bg-gray-600"
+      >
+        <i class="gg-add-r mr-2"></i>
+        Indicators
+      </button>
+    </div>
+    <TradingVue
+      v-if="chart"
+      :titleTxt="titleTxt"
+      :data="chart"
+      :overlays="overlays"
+      :height="height - 48"
+      :width="width"
+    />
+  </div>
 </template>
 
 <script>
-import { TradingVue, DataCube } from "trading-vue-js";
+import { TradingVue } from "trading-vue-js";
 import Overlays from "tvjs-overlays";
 
 import VolumeBySide from "@/overlays/VolumeBySide";
@@ -27,7 +38,6 @@ export default {
 
   data: () => ({
     titleTxt: "",
-    chart: null,
     overlays: [...Object.values(Overlays), VolumeBySide],
     height: window.innerHeight,
     width: window.innerWidth,
@@ -38,143 +48,20 @@ export default {
 
     this.titleTxt = this.$route.params.market.toUpperCase();
 
-    const res = await fetch(
-      process.env.VUE_APP_API_URL +
-        "/ftx-data/" +
-        this.$route.params.market.toLowerCase()
+    this.$store.dispatch(
+      "chart/addNewChart",
+      this.$route.params.market.toLowerCase()
     );
-    const json = await res.json();
-
-    const candles = [];
-    const openInterest = [];
-    const volumeBySide = [];
-    // const buyVolume = [];
-    // const sellVolume = [];
-    // const fundingRate = [];
-    // const bestOrderStrength = [];
-    // const orderStrength = [];
-    // const removedOrders = [];
-    // const volumeRatios = [];
-
-    for (let i = 0; i < json.candles.length; i++) {
-      const candle = json.candles[i];
-
-      const { open, high, low, close, buy_volume, sell_volume } = candle;
-
-      const timestamp = candle.timestamp * 60 * 1000;
-      // const vr =
-      //   json.volumeRatios &&
-      //   json.volumeRatios.find((v) => v.timestamp === candle.timestamp);
-
-      candles.push([
-        timestamp,
-        open,
-        high,
-        low,
-        close,
-        buy_volume + sell_volume,
-      ]);
-
-      openInterest.push([timestamp, candle.open_interest]);
-      volumeBySide.push([timestamp, buy_volume, -sell_volume]);
-      console.log(this.overlays);
-      // buyVolume.push([timestamp, buy_volume, true]);
-      // sellVolume.push([timestamp, sell_volume]);
-      // fundingRate.push([
-      //   timestamp,
-      //   candle.funding_rate,
-      //   candle.predicted_funding_rate,
-      // ]);
-      // bestOrderStrength.push([
-      //   timestamp,
-      //   candle.best_bid_strength,
-      //   candle.best_ask_strength,
-      // ]);
-      // orderStrength.push([timestamp, candle.bid_strength, candle.ask_strength]);
-      // removedOrders.push([timestamp, candle.removed_bids, candle.removed_asks]);
-      // if (vr) {
-      //   volumeRatios.push([
-      //     timestamp,
-      //     vr["1k"],
-      //     vr["10k"],
-      //     vr["10k"],
-      //     vr["1m"],
-      //     vr["10m"],
-      //   ]);
-      // }
-    }
-
-    this.chart = new DataCube({
-      chart: {
-        data: candles,
-      },
-      offchart: [
-        // {
-        //   name: "Open Interest",
-        //   type: "Spline",
-        //   data: openInterest,
-        // },
-        {
-          name: "Volume By Side",
-          type: "VolumeBySide",
-          data: volumeBySide,
-        },
-        // {
-        //   name: "Buy Volume",
-        //   type: "Volume",
-        //   data: buyVolume,
-        // },
-        // {
-        //   name: "Sell Volume",
-        //   type: "Volume",
-        //   data: sellVolume,
-        // },
-        // {
-        //   name: "Funding Rate & Predicted Funding Rate",
-        //   type: "Splines",
-        //   data: fundingRate,
-        //   settings: {
-        //     colors: [colors.green, colors.red],
-        //   },
-        // },
-        // {
-        //   name: "Best Bid Strength & Best Ask Strength",
-        //   type: "Splines",
-        //   data: bestOrderStrength,
-        //   settings: {
-        //     colors: [colors.green, colors.red],
-        //   },
-        // },
-        // {
-        //   name: "Bid Strength & Ask Strength",
-        //   type: "Splines",
-        //   data: orderStrength,
-        //   settings: {
-        //     colors: [colors.green, colors.red],
-        //   },
-        // },
-        // {
-        //   name: "Canceled Bids & Canceled Asks",
-        //   type: "Splines",
-        //   data: removedOrders,
-        //   settings: {
-        //     colors: [colors.green, colors.red],
-        //   },
-        // },
-        // {
-        //   name: "Volume Ratios (<1k, <10k, <100k, <1M, <10M)",
-        //   type: "Splines",
-        //   data: volumeRatios,
-        //   // settings: {
-        //   //   colors: [colors.green, colors.red],
-        //   // },
-        // },
-      ],
-    });
   },
 
   beforeDestroy() {
     window.removeEventListener("resize", this.onResizeWindow);
+  },
+
+  computed: {
+    chart() {
+      return this.$store.state.chart.charts[0];
+    },
   },
 
   methods: {

@@ -9,7 +9,6 @@ function createTimeChart({ ctx, chartType, values, label, minutes = 60 }) {
         const text = `${
           d.getMonth() + 1
         }/${d.getDate()}/${d.getFullYear()} ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()} GMT-0000`;
-        console.log(text);
         const date = new Date(text);
         return moment(date.getTime()).format("L, HH:mm ");
       }),

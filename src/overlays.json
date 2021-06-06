@@ -1,0 +1,14 @@
+[
+  {
+    "id": "open-interest",
+    "name": "Open Interest",
+    "type": "Spline",
+    "propName": "openInterest"
+  },
+  {
+    "id": "volume-by-side",
+    "name": "Volume By Side",
+    "type": "VolumeBySide",
+    "propName": "volumeBySide"
+  }
+]

@@ -29,6 +29,8 @@
       </form>
     </div> -->
 
+    <CModal />
+
     <main>
       <router-view></router-view>
     </main>
@@ -36,8 +38,14 @@
 </template>
 
 <script>
+import CModal from "@/components/CModal";
+
 export default {
   name: "App",
+
+  components: {
+    CModal,
+  },
 
   data: () => ({
     selectedTicker: "BTC",
