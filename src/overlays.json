@@ -10,5 +10,35 @@
     "name": "Volume By Side",
     "type": "VolumeBySide",
     "propName": "volumeBySide"
+  },
+  {
+    "id": "funding-rate",
+    "name": "Funding Rate",
+    "type": "Splines",
+    "propName": "fundingRate"
+  },
+  {
+    "id": "best-order-strength",
+    "name": "Best Bid & Best Ask Strength",
+    "type": "Splines",
+    "propName": "bestOrderStrength"
+  },
+  {
+    "id": "order-strength",
+    "name": "Bid & Ask Strength",
+    "type": "Splines",
+    "propName": "orderStrength"
+  },
+  {
+    "id": "removed-orders",
+    "name": "Canceled Orders By Side",
+    "type": "Splines",
+    "propName": "removedOrders"
+  },
+  {
+    "id": "volume-ratios",
+    "name": "Volume By Size",
+    "type": "Splines",
+    "propName": "volumeRatios"
   }
 ]
