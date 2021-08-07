@@ -25,6 +25,7 @@ import { TradingVue } from "trading-vue-js";
 import Overlays from "tvjs-overlays";
 
 import VolumeBySide from "@/overlays/VolumeBySide";
+import VolumeProfile from "@/overlays/VolumeProfile";
 
 // const colors = {
 //   red: "#e84329",
@@ -38,7 +39,7 @@ export default {
 
   data: () => ({
     titleTxt: "",
-    overlays: [...Object.values(Overlays), VolumeBySide],
+    overlays: [...Object.values(Overlays), VolumeBySide, VolumeProfile],
     height: window.innerHeight,
     width: window.innerWidth,
   }),

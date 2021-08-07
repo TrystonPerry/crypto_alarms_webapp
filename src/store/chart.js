@@ -26,7 +26,9 @@ export default () => ({
     },
 
     ADD_OVERLAY(state, { index, overlay }) {
-      state.charts[index].add("offchart", {
+      let place = "offchart";
+      if (overlay.id === "volume-profile") place = "onchart";
+      state.charts[index].add(place, {
         ...overlay,
         data: state.marketData[index][overlay.propName],
       });
@@ -56,16 +58,22 @@ export default () => ({
       const orderStrength = [];
       const removedOrders = [];
       const volumeRatios = [];
+      const volumeProfile = [];
 
       for (let i = 0; i < json.candles.length; i++) {
         const candle = json.candles[i];
 
         const { open, high, low, close, buy_volume, sell_volume } = candle;
+        if (high == 0 && low == 0) continue;
 
         const timestamp = candle.timestamp * 60 * 1000;
         const vr =
           json.volumeRatios &&
           json.volumeRatios.find((v) => v.timestamp === candle.timestamp);
+
+        const vp =
+          json.volumeProfile &&
+          json.volumeProfile.find((v) => v.timestamp === candle.timestamp);
 
         candles.push([
           timestamp,
@@ -108,6 +116,9 @@ export default () => ({
             vr["10m"],
           ]);
         }
+        if (vp) {
+          volumeProfile.push([timestamp, vp.profile]);
+        }
       }
 
       const chart = new DataCube({
@@ -126,6 +137,7 @@ export default () => ({
         orderStrength,
         removedOrders,
         volumeRatios,
+        volumeProfile,
       });
 
       setTimeout(() => {

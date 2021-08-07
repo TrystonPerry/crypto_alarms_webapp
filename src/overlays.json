@@ -1,5 +1,11 @@
 [
   {
+    "id": "volume-profile",
+    "name": "Volume Profile",
+    "type": "VolumeProfile",
+    "propName": "volumeProfile"
+  },
+  {
     "id": "open-interest",
     "name": "Open Interest",
     "type": "Spline",
