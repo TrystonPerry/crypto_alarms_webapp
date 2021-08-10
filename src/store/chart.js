@@ -59,6 +59,8 @@ export default () => ({
       const removedOrders = [];
       const volumeRatios = [];
       const volumeProfile = [];
+      const absorptionBySide = [];
+      const cad = [];
 
       for (let i = 0; i < json.candles.length; i++) {
         const candle = json.candles[i];
@@ -118,6 +120,32 @@ export default () => ({
         }
         if (vp) {
           volumeProfile.push([timestamp, vp.profile]);
+          const ticks =
+            vp.profile[vp.profile.length - 1].price - vp.profile[0].price;
+          console.log(vp.profile);
+          let buys = 0;
+          let sells = 0;
+          for (let i = 0; i < vp.profile.length; i++) {
+            buys += vp.profile[i].buy_volume;
+            sells += vp.profile[i].sell_volume;
+          }
+          buys = buys / ticks;
+          sells = sells / ticks;
+          absorptionBySide.push([
+            timestamp,
+            (buys - sells) * (buy_volume + sell_volume),
+          ]);
+          if (i >= 100) {
+            cad.push([timestamp, 0, 0]);
+            for (
+              let j = absorptionBySide.length - 1;
+              j > absorptionBySide.length - 101;
+              j--
+            ) {
+              cad[cad.length - 1][1] += absorptionBySide[j][1];
+            }
+            console.log(cad[cad.length - 1]);
+          }
         }
       }
 
@@ -138,6 +166,8 @@ export default () => ({
         removedOrders,
         volumeRatios,
         volumeProfile,
+        absorptionBySide,
+        cad,
       });
 
       setTimeout(() => {

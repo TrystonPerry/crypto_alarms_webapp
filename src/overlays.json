@@ -6,6 +6,18 @@
     "propName": "volumeProfile"
   },
   {
+    "id": "absorption-by-side",
+    "name": "Absorption By Side",
+    "type": "Splines",
+    "propName": "absorptionBySide"
+  },
+  {
+    "id": "cad",
+    "name": "Cumulative Absorption Delta",
+    "type": "Splines",
+    "propName": "cad"
+  },
+  {
     "id": "open-interest",
     "name": "Open Interest",
     "type": "Spline",
