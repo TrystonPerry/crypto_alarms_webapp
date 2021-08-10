@@ -61,6 +61,7 @@ export default {
 
   computed: {
     chart() {
+      console.log(this.$store.state.chart.charts[0]);
       return this.$store.state.chart.charts[0];
     },
   },

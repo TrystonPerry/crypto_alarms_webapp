@@ -31,6 +31,9 @@ export default () => ({
       state.charts[index].add(place, {
         ...overlay,
         data: state.marketData[index][overlay.propName],
+        settings: {
+          legend: false,
+        },
       });
       Vue.set(state.overlays, overlay.id, true);
       syncOverlaysLocaly(state.overlays);
@@ -122,7 +125,6 @@ export default () => ({
           volumeProfile.push([timestamp, vp.profile]);
           const ticks =
             vp.profile[vp.profile.length - 1].price - vp.profile[0].price;
-          console.log(vp.profile);
           let buys = 0;
           let sells = 0;
           for (let i = 0; i < vp.profile.length; i++) {
@@ -131,10 +133,7 @@ export default () => ({
           }
           buys = buys / ticks;
           sells = sells / ticks;
-          absorptionBySide.push([
-            timestamp,
-            (buys - sells) * (buy_volume + sell_volume),
-          ]);
+          absorptionBySide.push([timestamp, buys, -sells]);
           if (i >= 100) {
             cad.push([timestamp, 0, 0]);
             for (
@@ -144,14 +143,17 @@ export default () => ({
             ) {
               cad[cad.length - 1][1] += absorptionBySide[j][1];
             }
-            console.log(cad[cad.length - 1]);
           }
         }
       }
 
       const chart = new DataCube({
         chart: {
+          type: "R",
           data: candles,
+          settings: {
+            showVolume: false,
+          },
         },
       });
 

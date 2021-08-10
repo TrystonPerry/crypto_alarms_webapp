@@ -32,19 +32,16 @@ export default {
       const data = this.$props.data;
       window.layout = layout;
 
-      console.log("Draw VP", data);
-
       for (var k = 0, n = data.length; k < n; k++) {
         let p = data[k];
         const vp = p[1];
         let x = layout.t2screen(p[0]);
-        let y1 = layout.$2screen(vp[0].price);
-        let y2 = layout.$2screen(vp[vp.length - 1].price);
-        console.log(x, y1, y2);
+        // let y1 = layout.$2screen(vp[0].price);
+        // let y2 = layout.$2screen(vp[vp.length - 1].price);
         const w = layout.px_step;
 
-        ctx.fillStyle = "#4a4a4a";
-        ctx.fillRect(x - w / 2, y2, w, y1 - y2);
+        // ctx.fillStyle = "#4a4a4a";
+        // ctx.fillRect(x - w / 2, y2, w, y1 - y2);
 
         // Loop through all prices
         for (const v of vp) {
@@ -54,13 +51,13 @@ export default {
           const y4 = layout.$2screen(price - 1);
 
           ctx.fillStyle = "#E54150";
-          const sellPerc = v.sell_volume / 100000;
-          const sw = Math.min(sellPerc * w, w / 2);
+          const sellPerc = v.sell_volume / 1000000;
+          const sw = Math.min(sellPerc * w);
           ctx.fillRect(x, y3, -sw, y4 - y3);
 
           ctx.fillStyle = "#0dc719";
-          const buyPerc = v.buy_volume / 100000;
-          const bw = Math.min(buyPerc * w, w / 2);
+          const buyPerc = v.buy_volume / 1000000;
+          const bw = Math.min(buyPerc * w);
           ctx.fillRect(x, y3, bw, y4 - y3);
         }
       }

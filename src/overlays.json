@@ -8,7 +8,7 @@
   {
     "id": "absorption-by-side",
     "name": "Absorption By Side",
-    "type": "Splines",
+    "type": "VolumeBySide",
     "propName": "absorptionBySide"
   },
   {
