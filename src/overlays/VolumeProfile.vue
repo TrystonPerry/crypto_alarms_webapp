@@ -43,12 +43,32 @@ export default {
         // ctx.fillStyle = "#4a4a4a";
         // ctx.fillRect(x - w / 2, y2, w, y1 - y2);
 
+        const tickrate = 5;
+        let profile = [];
+
+        // Congregate tickrates if more than 1
+        for (let i = 0; i < vp.length; i += tickrate) {
+          const nv = {
+            price: vp[i].price - (vp[i].price % tickrate),
+            buy_volume: vp[i].buy_volume,
+            sell_volume: vp[i].sell_volume,
+          };
+          for (let j = 1; j < tickrate; j++) {
+            if (!vp[i + j]) {
+              continue;
+            }
+            nv.buy_volume += vp[i + j].buy_volume;
+            nv.sell_volume += vp[i + j].sell_volume;
+          }
+          profile.push(nv);
+        }
+
         // Loop through all prices
-        for (const v of vp) {
+        for (const v of profile) {
           const { price } = v;
 
           const y3 = layout.$2screen(price);
-          const y4 = layout.$2screen(price - 1);
+          const y4 = layout.$2screen(price - tickrate);
 
           ctx.fillStyle = "#E54150";
           const sellPerc = v.sell_volume / 1000000;
