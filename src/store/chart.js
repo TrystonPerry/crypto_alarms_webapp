@@ -32,7 +32,7 @@ export default () => ({
         ...overlay,
         data: state.marketData[index][overlay.propName],
         settings: {
-          legend: false,
+          legend: overlay.id === "volume-profile" ? false : true,
         },
       });
       Vue.set(state.overlays, overlay.id, true);
@@ -141,7 +141,8 @@ export default () => ({
               j > absorptionBySide.length - 101;
               j--
             ) {
-              cad[cad.length - 1][1] += absorptionBySide[j][1];
+              cad[cad.length - 1][1] +=
+                absorptionBySide[j][1] + absorptionBySide[j][2];
             }
           }
         }
