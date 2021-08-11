@@ -152,11 +152,17 @@ export default () => ({
         chart: {
           type: "R",
           data: candles,
-          settings: {
-            showVolume: false,
-          },
         },
+        datasets: [
+          {
+            type: "Volume",
+            id: "volumeBySide",
+            data: volumeBySide,
+          },
+        ],
       });
+
+      console.log(chart.data.datasets[0]);
 
       commit("ADD_NEW_CHART", chart);
       commit("ADD_MARKET_DATA", {

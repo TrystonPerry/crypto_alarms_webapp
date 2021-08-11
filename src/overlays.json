@@ -6,6 +6,12 @@
     "propName": "volumeProfile"
   },
   {
+    "id": "cvd",
+    "name": "Cumulative Volume Delta",
+    "type": "CVD",
+    "propName": "volumeBySide"
+  },
+  {
     "id": "absorption-by-side",
     "name": "Absorption By Side",
     "type": "VolumeBySide",

@@ -28,11 +28,7 @@ import Overlays from "tvjs-overlays";
 
 import VolumeBySide from "@/overlays/VolumeBySide";
 import VolumeProfile from "@/overlays/VolumeProfile";
-
-// const colors = {
-//   red: "#e84329",
-//   green: "#30e53f",
-// };
+import CVD from "@/overlays/CVD";
 
 export default {
   components: {
@@ -41,7 +37,7 @@ export default {
 
   data: () => ({
     titleTxt: "",
-    overlays: [...Object.values(Overlays), VolumeBySide, VolumeProfile],
+    overlays: [...Object.values(Overlays), VolumeBySide, VolumeProfile, CVD],
     height: window.innerHeight,
     width: window.innerWidth,
   }),
@@ -63,7 +59,6 @@ export default {
 
   computed: {
     chart() {
-      console.log(this.$store.state.chart.charts[0]);
       return this.$store.state.chart.charts[0];
     },
   },
