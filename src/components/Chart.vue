@@ -16,6 +16,8 @@
       :overlays="overlays"
       :height="height - 48"
       :width="width"
+      :legendButtons="['add', 'remove', 'display', 'up', 'down', 'settings']"
+      :toolbar="true"
     />
   </div>
 </template>
