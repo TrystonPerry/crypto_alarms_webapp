@@ -44,6 +44,23 @@ export default () => ({
       Vue.delete(state.overlays, id);
       syncOverlaysLocaly(state.overlays);
     },
+
+    UPDATE_CHART(
+      state,
+      { Timestamp, Open, High, Low, Close, BuyVolume, SellVolume }
+    ) {
+      console.log(Timestamp * 60 * 1000);
+      state.charts[0].update({
+        candle: [
+          Timestamp * 60 * 1000,
+          Open,
+          High,
+          Low,
+          Close,
+          BuyVolume + SellVolume,
+        ],
+      });
+    },
   },
 
   actions: {
@@ -72,6 +89,7 @@ export default () => ({
         if (high == 0 && low == 0) continue;
 
         const timestamp = candle.timestamp * 60 * 1000;
+        console.log(timestamp);
         const vr =
           json.volumeRatios &&
           json.volumeRatios.find((v) => v.timestamp === candle.timestamp);
@@ -149,7 +167,7 @@ export default () => ({
 
       const chart = new DataCube({
         chart: {
-          type: "R",
+          // type: "R",
           data: candles,
           settings: {
             showVolume: false,

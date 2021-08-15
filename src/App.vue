@@ -47,6 +47,19 @@ export default {
     CModal,
   },
 
+  mounted() {
+    setTimeout(() => {
+      this.$socket.send(
+        JSON.stringify({
+          Op: "subscribe",
+          Channel: "market",
+          Market: "FTX",
+          Pair: "BTC-PERP",
+        })
+      );
+    }, 2000);
+  },
+
   data: () => ({
     selectedTicker: "BTC",
     ticker: "BTC",
