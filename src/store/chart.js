@@ -134,17 +134,6 @@ export default () => ({
           buys = buys / ticks;
           sells = sells / ticks;
           absorptionBySide.push([timestamp, buys, -sells]);
-          if (i >= 100) {
-            cad.push([timestamp, 0, 0]);
-            for (
-              let j = absorptionBySide.length - 1;
-              j > absorptionBySide.length - 101;
-              j--
-            ) {
-              cad[cad.length - 1][1] +=
-                absorptionBySide[j][1] + absorptionBySide[j][2];
-            }
-          }
         }
       }
 
