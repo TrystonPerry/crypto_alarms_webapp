@@ -83,11 +83,10 @@ export default {
         const profile = [candle.timestamp, []];
 
         const keys = Object.keys(vp);
-        console.log(keys);
         for (let i = 0; i < keys.length; i += this.tickrate) {
           const key = keys[i];
           const nv = {
-            price: key - (key % this.tickrate),
+            price: +key + this.tickrate - (+key % this.tickrate),
             buyVolume: vp[key].buyVolume,
             sellVolume: vp[key].sellVolume,
           };
@@ -95,7 +94,6 @@ export default {
           for (let j = 1; j < this.tickrate; j++) {
             const nextKey = `${+key + j}.000000`;
             if (!vp[nextKey]) {
-              console.log(vp[nextKey], nextKey);
               continue;
             }
             nv.buyVolume += vp[nextKey].buyVolume;
