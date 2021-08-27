@@ -41,7 +41,6 @@ export default () => ({
     },
 
     ADD_OVERLAY(state, { index, overlay }) {
-      console.log(overlay);
       let place = "offchart";
       if (overlay.id === "volume-profile") place = "onchart";
       state.charts[index].add(place, {
