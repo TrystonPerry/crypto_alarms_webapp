@@ -83,22 +83,34 @@ export default {
         const profile = [candle.timestamp, []];
 
         const keys = Object.keys(vp);
-        for (let i = 0; i < keys.length; i += this.tickrate) {
-          const key = keys[i];
+        const firstKey = +keys[0];
+        const lastKey = +keys[keys.length - 1];
+
+        // Starting price = first VP price + averaged to tickrate
+        const startingPrice =
+          firstKey +
+          this.tickrate -
+          (firstKey % this.tickrate || this.tickrate);
+
+        // Get required amount of ticks by getting difference between top price and last price
+        const lastPrice = lastKey - (lastKey % this.tickrate);
+
+        for (let i = startingPrice; i <= lastPrice; i += this.tickrate) {
+          // Create new volume profile for this tick
           const nv = {
-            price: +key + this.tickrate - (+key % this.tickrate),
-            buyVolume: vp[key].buyVolume,
-            sellVolume: vp[key].sellVolume,
+            price: i,
+            buyVolume: 0,
+            sellVolume: 0,
           };
 
-          for (let j = 1; j < this.tickrate; j++) {
-            const nextKey = `${+key + j}.000000`;
-            if (!vp[nextKey]) {
-              continue;
-            }
-            nv.buyVolume += vp[nextKey].buyVolume;
-            nv.sellVolume += vp[nextKey].sellVolume;
+          // Look through next prices
+          for (let j = 0; j < this.tickrate; j++) {
+            const node = vp[`${i + j}.000000`];
+            if (!node) continue;
+            nv.buyVolume += node.buyVolume;
+            nv.sellVolume += node.sellVolume;
           }
+
           profile[1].push(nv);
         }
 
