@@ -44,13 +44,6 @@ export default {
 
   async mounted() {
     window.addEventListener("resize", this.onResizeWindow);
-
-    this.titleTxt = this.$route.params.market.toUpperCase();
-
-    this.$store.dispatch(
-      "chart/addNewChart",
-      this.$route.params.market.toLowerCase()
-    );
   },
 
   beforeDestroy() {

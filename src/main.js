@@ -21,7 +21,13 @@ Vue.use(VueNativeSock, "ws://localhost:3001/ws", {
   store,
   format: "json",
   passToStoreHandler(_, e) {
-    this.store.commit("chart/UPDATE_CHART", JSON.parse(e.data).Candle);
+    if (!e.data) return;
+    const data = JSON.parse(e.data);
+    if (data.type === "initial") {
+      this.store.dispatch("chart/addNewChart", data.payload);
+    } else if (data.type === "update") {
+      this.store.commit("chart/UPDATE_CHART", data.payload);
+    }
   },
 });
 

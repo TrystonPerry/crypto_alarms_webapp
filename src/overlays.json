@@ -3,66 +3,66 @@
     "id": "volume-profile",
     "name": "Volume Profile",
     "type": "VolumeProfile",
-    "propName": "volumeProfile"
+    "propName": "VolumeProfile"
   },
   {
     "id": "cvd",
     "name": "Cumulative Volume Delta",
     "type": "CVD",
-    "propName": "volumeBySide"
+    "propName": "VolumeBySide"
   },
   {
     "id": "absorption-by-side",
     "name": "Absorption By Side",
     "type": "VolumeBySide",
-    "propName": "absorptionBySide"
+    "propName": "AbsorptionBySide"
   },
   {
     "id": "cad",
     "name": "Cumulative Absorption Delta",
     "type": "Splines",
-    "propName": "cad"
+    "propName": "CAD"
   },
   {
     "id": "open-interest",
     "name": "Open Interest",
     "type": "Spline",
-    "propName": "openInterest"
+    "propName": "OpenInterest"
   },
   {
     "id": "volume-by-side",
     "name": "Volume By Side",
     "type": "VolumeBySide",
-    "propName": "volumeBySide"
+    "propName": "VolumeBySide"
   },
   {
     "id": "funding-rate",
     "name": "Funding Rate",
     "type": "Splines",
-    "propName": "fundingRate"
+    "propName": "FundingRate"
   },
   {
     "id": "best-order-strength",
     "name": "Best Bid & Best Ask Strength",
     "type": "Splines",
-    "propName": "bestOrderStrength"
+    "propName": "BestOrderStrength"
   },
   {
     "id": "order-strength",
     "name": "Bid & Ask Strength",
     "type": "Splines",
-    "propName": "orderStrength"
+    "propName": "OrderStrength"
   },
   {
     "id": "removed-orders",
     "name": "Canceled Orders By Side",
     "type": "Splines",
-    "propName": "removedOrders"
+    "propName": "RemovedOrders"
   },
   {
     "id": "volume-ratios",
     "name": "Volume By Size",
     "type": "Splines",
-    "propName": "volumeRatios"
+    "propName": "VolumeRatios"
   }
 ]

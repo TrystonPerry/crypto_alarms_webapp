@@ -54,12 +54,12 @@ export default {
           const y4 = layout.$2screen(price - this.tickrate);
 
           ctx.fillStyle = "#E54150";
-          const sellPerc = v.sell_volume / 1000000;
+          const sellPerc = v.sellVolume / 1000000;
           const sw = Math.min(sellPerc * w);
           ctx.fillRect(x, y3, -sw, y4 - y3);
 
           ctx.fillStyle = "#0dc719";
-          const buyPerc = v.buy_volume / 1000000;
+          const buyPerc = v.buyVolume / 1000000;
           const bw = Math.min(buyPerc * w);
           ctx.fillRect(x, y3, bw, y4 - y3);
         }
@@ -75,25 +75,31 @@ export default {
   computed: {
     volumeProfile() {
       const profiles = [];
+      const md = this.$store.state.chart.marketData;
 
       // Congregate tickrates if more than 1
-      for (const data of this.$props.data) {
-        const vp = data[1];
-        const profile = [data[0], []];
+      for (const candle of md) {
+        const vp = candle.volumeProfile;
+        const profile = [candle.timestamp, []];
 
-        for (let i = 0; i < vp.length; i += this.tickrate) {
+        const keys = Object.keys(vp);
+        console.log(keys);
+        for (let i = 0; i < keys.length; i += this.tickrate) {
+          const key = keys[i];
           const nv = {
-            price: vp[i].price - (vp[i].price % this.tickrate),
-            buy_volume: vp[i].buy_volume,
-            sell_volume: vp[i].sell_volume,
+            price: key - (key % this.tickrate),
+            buyVolume: vp[key].buyVolume,
+            sellVolume: vp[key].sellVolume,
           };
 
           for (let j = 1; j < this.tickrate; j++) {
-            if (!vp[i + j]) {
+            const nextKey = `${+key + j}.000000`;
+            if (!vp[nextKey]) {
+              console.log(vp[nextKey], nextKey);
               continue;
             }
-            nv.buy_volume += vp[i + j].buy_volume;
-            nv.sell_volume += vp[i + j].sell_volume;
+            nv.buyVolume += vp[nextKey].buyVolume;
+            nv.sellVolume += vp[nextKey].sellVolume;
           }
           profile[1].push(nv);
         }
